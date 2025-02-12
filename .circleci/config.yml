@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Decode Keystore
           command: |
-            echo $ANDROID_KEYSTORE | base64 --decode > my-release-key.keystore
+            echo $ANDROID_KEYSTORE | openssl base64 -d -out my-release-key.keystore
       - run:
           name: Build Release APK
           command: |
