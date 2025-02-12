@@ -4,17 +4,17 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: circleci/22.13.1
+      - image: circleci/node:14
     steps:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
           name: Install Yarn
           command: npm install -g yarn
+      - run:
+          name: Install Dependencies
+          command: yarn install
       - run:
           name: Run tests
           command: yarn test
