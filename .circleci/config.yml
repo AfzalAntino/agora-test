@@ -27,9 +27,9 @@ jobs:
       PATH: /opt/android/sdk/tools:/opt/android/sdk/tools/bin:/opt/android/sdk/platform-tools:$PATH
     steps:
       - checkout
-      # - run:
-      #     name: Install base64
-      #     command: apk add --no-cache coreutils
+   - run:
+      name: Install core utilities
+      command: apt-get update && apt-get install -y coreutils
       - run:
           name: Decode Keystore
           command: |
