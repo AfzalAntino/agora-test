@@ -44,7 +44,6 @@ const App = () => {
 
   return (
     <>
-      <Text>Hello first ci/cd with circleci</Text>
       <NavigationContainer linking={linking} fallback={fallbackComp}>
         <Stack.Navigator
           initialRouteName="Home"
