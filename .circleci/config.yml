@@ -18,7 +18,7 @@ jobs:
 
   build_release_apk:
     docker:
-       - image: cimg/android:2023.02
+      - image: cimg/android:2023.02
     working_directory: ~/repo
     environment:
       JDK8_HOME: /usr/lib/jvm/java-8-openjdk-amd64
@@ -28,9 +28,8 @@ jobs:
     steps:
       - checkout
       - run:
-         - run:
-    name: Install base64
-    command: apk add --no-cache coreutils
+          name: Install base64
+          command: apk add --no-cache coreutils
       - run:
           name: Decode Keystore
           command: |
