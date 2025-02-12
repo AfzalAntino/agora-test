@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "672040858928",
+    "project_id": "signin-a94b2",
+    "storage_bucket": "signin-a94b2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672040858928:android:49a3db39b7db8bf603c4f5",
+        "android_client_info": {
+          "package_name": "com.agora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIEU_VMMeIIxvJ6lWtUU_ZEz9n82ObnCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
