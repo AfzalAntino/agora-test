@@ -18,7 +18,7 @@ jobs:
 
   build_release_apk:
     docker:
-      - image: cimg/android:2021.10
+      - image: circleci/android:api-30
     working_directory: ~/repo
     environment:
       JDK8_HOME: /usr/lib/jvm/java-8-openjdk-amd64
