@@ -1,7 +1,13 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {ActivityIndicator, NativeModules, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  NativeModules,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import CallScreen from './src/Screens/CallScreen';
 import Home from './src/Screens/Home';
 import Login from './src/Screens/Login';
@@ -37,15 +43,18 @@ const App = () => {
   );
 
   return (
-    <NavigationContainer linking={linking} fallback={fallbackComp}>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="CallScreen" component={CallScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <Text>Say Hello</Text>
+      <NavigationContainer linking={linking} fallback={fallbackComp}>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={Home} />
+          {/* <Stack.Screen name="CallScreen" component={CallScreen} /> */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 
