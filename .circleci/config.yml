@@ -30,7 +30,8 @@ jobs:
       - run:
           name: Decode Keystore
           command: |
-            echo $ANDROID_KEYSTORE | openssl base64 -d -out my-release-key.keystore
+            echo "const fs = require('fs'); const content = process.env.ANDROID_KEYSTORE; fs.writeFileSync('my-release-key.keystore', Buffer.from(content, 'base64'));" > decodeKeystore.js
+            node decodeKeystore.js
       - run:
           name: Build Release APK
           command: |
