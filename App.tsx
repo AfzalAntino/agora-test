@@ -44,7 +44,10 @@ const App = () => {
 
   return (
     <>
-      <Text>Hello first ci/cd with circleci</Text>
+      <Text
+        style={{backgroundColor: 'lightred', padding: 16, borderRadius: 10}}>
+        Hello first ci/cd with circleci
+      </Text>
       <NavigationContainer linking={linking} fallback={fallbackComp}>
         <Stack.Navigator
           initialRouteName="Home"
