@@ -15,13 +15,3 @@ jobs:
       - run:
           name: Run tests
           command: npm run test
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
