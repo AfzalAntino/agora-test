@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:14
+      - image: circleci/22.13.1
     steps:
       - checkout
       - restore_cache:
@@ -12,6 +12,9 @@ jobs:
       - run:
           name: Install Dependencies
           command: npm install
+      - run:
+          name: Install Yarn
+          command: npm install -g yarn
       - run:
           name: Run tests
           command: yarn test
