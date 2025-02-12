@@ -10,11 +10,8 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
-          name: Install Yarn
-          command: npm install -g yarn
-      - run:
           name: Install Dependencies
-          command: yarn install
+          command: npx yarn install
       - run:
           name: Run tests
-          command: yarn test
+          command: npx yarn test
