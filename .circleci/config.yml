@@ -93,9 +93,9 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - master
       - build-android:
           filters:
             branches:
               only:
-                - main
+                - master
