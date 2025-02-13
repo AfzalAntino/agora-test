@@ -16,40 +16,86 @@ jobs:
           name: Run tests
           command: npx yarn test
 
-  build_release_apk:
+   build-android:
     docker:
-      - image: cimg/android:2023.02
+      - image: cimg/android:2024.01
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
     working_directory: ~/repo
-    environment:
-      JDK8_HOME: /usr/lib/jvm/java-8-openjdk-amd64
-      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
-      ANDROID_HOME: /opt/android/sdk
-      PATH: /opt/android/sdk/tools:/opt/android/sdk/tools/bin:/opt/android/sdk/platform-tools:$PATH
     steps:
       - checkout
+      # - run:
+      #     name: Decrypt Keystore File
+      #     command: openssl aes-256-cbc -d -in android/app/release.keystore.enc -out android/app/release.keystore -k ENCRYPTION_KEY
       - run:
-          name: Install core utilities
-          command: apt-get update && apt-get install -y coreutils
+          name: Install Java 17
+          command: sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
       - run:
-          name: Decode Keystore
+          name: Set JAVA_HOME
+          command: echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> $BASH_ENV
+      - run:
+          name: Install Node.js
           command: |
-            echo $ANDROID_KEYSTORE | base64 --decode > my-release-key.keystore
+            curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+            sudo npm install -g yarn
       - run:
-          name: Build Release APK
+          name: Check Node Version
+          command: node --version
+      # - node/install:
+      #     node-version: '20.16' //define your node_version you are using
+      # - run:
+      #     name: Enable Yarn via Corepack
+      #     command: corepack enable  # This will install and set up Yarn
+      - run:
+          name: Check yarn Version
+          command: yarn --version
+      - run:
+          name: Install node modules
+          command: yarn install
+      - run:
+          name: Chmod permissions
+          command: sudo chmod +x ./gradlew
+          working_directory: android
+      - run:
+          name: Clean project
+          working_directory: android
+          command: | 
+            pwd
+            ./gradlew clean
+      - run:
+          name: Create Assets Folder
           command: |
-            ./gradlew assembleRelease -Pandroid.injected.signing.store.file=my-release-key.keystore \
-                                      -Pandroid.injected.signing.store.password=$ANDROID_KEYSTORE_PASSWORD \
-                                      -Pandroid.injected.signing.key.alias=$ANDROID_KEY_ALIAS \
-                                      -Pandroid.injected.signing.key.password=$ANDROID_KEY_PASSWORD
+            sudo mkdir -p android/app/src/main/assets  # Create the assets folder if it doesn't exist
+      - run:
+          name: Generate React Native Bundle
+          command: |
+            pwd
+            sudo chown -R circleci:circleci ~/repo/android
+            npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+      - run:
+          name: Build Android APK
+          working_directory: android
+          command: ./gradlew assembleDebug  # Build the debug APK
       - store_artifacts:
-          path: app/build/outputs/apk/release
-          destination: release-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk  # Save the APK as an artifact
+            
+      # - run:
+      #     name: Run tests and upload to Play Store
+      #     command: fastlane deploy_to_production
+      #     working_directory: android
 
 workflows:
-  version: 2
-  build_and_test:
+  build-and-test:
     jobs:
-      - build
-      - build_release_apk:
-          requires:
-            - build
+      - build :
+          filters:
+            branches:
+              only:
+                - main 
+      - build-android:
+          filters:
+            branches:
+              only:
+                - main 
