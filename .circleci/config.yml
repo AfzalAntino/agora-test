@@ -25,12 +25,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run:
-          name: Install base64
-          command: apt-get update && apt-get install -y coreutils
-      - run:
-          name: Install Ninja
-          command: apt-get install -y ninja-build
+      # - run:
+      #     name: Decrypt Keystore File
+      #     command: openssl aes-256-cbc -d -in android/app/release.keystore.enc -out android/app/release.keystore -k ENCRYPTION_KEY
       - run:
           name: Install Java 17
           command: sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
@@ -46,6 +43,11 @@ jobs:
       - run:
           name: Check Node Version
           command: node --version
+      # - node/install:
+      #     node-version: '20.16' //define your node_version you are using
+      # - run:
+      #     name: Enable Yarn via Corepack
+      #     command: corepack enable  # This will install and set up Yarn
       - run:
           name: Check yarn Version
           command: yarn --version
@@ -78,6 +80,11 @@ jobs:
           command: ./gradlew assembleDebug # Build the debug APK
       - store_artifacts:
           path: android/app/build/outputs/apk/debug/app-debug.apk # Save the APK as an artifact
+
+      # - run:
+      #     name: Run tests and upload to Play Store
+      #     command: fastlane deploy_to_production
+      #     working_directory: android
 
 workflows:
   build-and-test:
